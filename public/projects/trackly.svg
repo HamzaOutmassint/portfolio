@@ -1,0 +1,29 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#D9D6CB"/>
+  <rect x="96" y="86" width="1408" height="828" fill="#171714"/>
+  <rect x="128" y="118" width="1344" height="764" fill="#F2F0E8"/>
+  <rect x="128" y="118" width="244" height="764" fill="#E4512A"/>
+  <circle cx="176" cy="169" r="14" fill="#171714"/>
+  <path d="M202 156H292V181H202V156Z" fill="#171714"/>
+  <path d="M166 290H311" stroke="#171714" stroke-width="10"/>
+  <path d="M166 344H275" stroke="#171714" stroke-width="10" opacity="0.55"/>
+  <path d="M166 398H298" stroke="#171714" stroke-width="10" opacity="0.55"/>
+  <path d="M166 452H258" stroke="#171714" stroke-width="10" opacity="0.55"/>
+  <path d="M166 821H258" stroke="#171714" stroke-width="10"/>
+  <text x="426" y="190" fill="#171714" font-family="Arial, sans-serif" font-size="28" font-weight="700">OVERVIEW</text>
+  <text x="426" y="266" fill="#171714" font-family="Arial, sans-serif" font-size="64" font-weight="700">Good morning.</text>
+  <text x="426" y="312" fill="#727169" font-family="Arial, sans-serif" font-size="22">Your operations at a glance.</text>
+  <rect x="426" y="370" width="288" height="180" fill="#E4E1D7"/>
+  <text x="454" y="414" fill="#727169" font-family="Arial, sans-serif" font-size="18">ORDERS TODAY</text>
+  <text x="454" y="502" fill="#171714" font-family="Arial, sans-serif" font-size="68" font-weight="700">284</text>
+  <rect x="738" y="370" width="288" height="180" fill="#E4E1D7"/>
+  <text x="766" y="414" fill="#727169" font-family="Arial, sans-serif" font-size="18">DELIVERY RATE</text>
+  <text x="766" y="502" fill="#171714" font-family="Arial, sans-serif" font-size="68" font-weight="700">76%</text>
+  <rect x="1050" y="370" width="366" height="180" fill="#171714"/>
+  <text x="1078" y="414" fill="#A6A49C" font-family="Arial, sans-serif" font-size="18">CURRENT BALANCE</text>
+  <text x="1078" y="502" fill="#F2F0E8" font-family="Arial, sans-serif" font-size="60" font-weight="700">48,920</text>
+  <rect x="426" y="582" width="990" height="238" fill="#E4E1D7"/>
+  <path d="M470 758C553 726 595 742 661 678C729 611 783 721 863 660C956 589 1009 677 1082 625C1154 573 1214 652 1370 608" stroke="#E4512A" stroke-width="9"/>
+  <path d="M470 784H1370" stroke="#C4C0B6" stroke-width="2"/>
+  <text x="470" y="624" fill="#171714" font-family="Arial, sans-serif" font-size="20" font-weight="700">ORDER VOLUME</text>
+</svg>

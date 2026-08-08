@@ -1,0 +1,21 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#D9D6CB"/>
+  <rect x="96" y="86" width="1408" height="828" fill="#F2F0E8"/>
+  <path d="M128 160H1472" stroke="#171714" stroke-width="2"/>
+  <text x="128" y="139" fill="#171714" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="3">VOYSPIRE</text>
+  <text x="1234" y="139" fill="#727169" font-family="Arial, sans-serif" font-size="16" letter-spacing="2">PLACES  STORIES  NOTES</text>
+  <rect x="128" y="198" width="824" height="592" fill="#171714"/>
+  <circle cx="540" cy="494" r="210" fill="#E4512A"/>
+  <path d="M330 494C424 431 495 563 594 472C688 385 730 500 750 494" stroke="#F2F0E8" stroke-width="16"/>
+  <path d="M128 790H952" stroke="#171714" stroke-width="2"/>
+  <text x="994" y="252" fill="#727169" font-family="Arial, sans-serif" font-size="17" letter-spacing="2">ISSUE 01 — MOROCCO</text>
+  <text x="994" y="342" fill="#171714" font-family="Arial, sans-serif" font-size="72" font-weight="700">GO</text>
+  <text x="994" y="408" fill="#171714" font-family="Arial, sans-serif" font-size="72" font-weight="700">SLOWER.</text>
+  <text x="994" y="500" fill="#727169" font-family="Arial, sans-serif" font-size="21">An edit of places worth</text>
+  <text x="994" y="532" fill="#727169" font-family="Arial, sans-serif" font-size="21">taking time for.</text>
+  <rect x="994" y="612" width="304" height="2" fill="#171714"/>
+  <text x="994" y="655" fill="#171714" font-family="Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="2">EXPLORE THE STORY ↗</text>
+  <text x="128" y="848" fill="#171714" font-family="Arial, sans-serif" font-size="18">31.6295° N</text>
+  <text x="824" y="848" fill="#171714" font-family="Arial, sans-serif" font-size="18">MARRAKECH</text>
+  <text x="1364" y="848" fill="#727169" font-family="Arial, sans-serif" font-size="18">01 / 06</text>
+</svg>
