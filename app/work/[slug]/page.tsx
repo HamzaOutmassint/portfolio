@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { CurrentYear } from "@/components/ui/CurrentYear";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/Header";
 import { getNextProject, getProject, projects } from "@/data/projects";
@@ -125,7 +126,7 @@ export default async function WorkPage({ params }: WorkPageProps) {
             <Link href="/#work" className="link-line">
               All work
             </Link>
-            <p>© 2026 Hamza Outmassint</p>
+            <p>© <CurrentYear initialYear={new Date().getFullYear()} /> Hamza Outmassint</p>
           </div>
         </div>
       </section>

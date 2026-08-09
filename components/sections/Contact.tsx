@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { siteConfig, socialLinks } from "@/lib/site-config";
+import { CurrentYear } from "@/components/ui/CurrentYear";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -139,7 +140,7 @@ export function Contact() {
           </nav>
           <div className="flex justify-between text-dark-muted sm:justify-end sm:gap-12">
             <p>{siteConfig.location}</p>
-            <p>© 2026 {siteConfig.name}</p>
+            <p>© <CurrentYear initialYear={new Date().getFullYear()} /> {siteConfig.name}</p>
           </div>
         </footer>
       </div>
