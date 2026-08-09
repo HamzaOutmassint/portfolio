@@ -76,6 +76,7 @@ export function Contact() {
       id="contact"
       className="min-h-[100svh] bg-dark text-canvas"
       aria-labelledby="contact-title"
+      data-cursor-tone="light"
     >
       <div className="page-shell flex min-h-[100svh] flex-col pt-[clamp(5rem,10vw,9rem)] pb-6 sm:pb-8">
         <p className="editorial-label text-dark-muted">Contact</p>
@@ -100,6 +101,8 @@ export function Contact() {
             ref={ctaRef}
             href={`mailto:${siteConfig.email}`}
             className="group mt-12 inline-flex border-b border-canvas/50 pb-2 text-[clamp(1.6rem,3.4vw,3.3rem)] leading-none font-medium tracking-[-0.04em] sm:mt-16"
+            data-cursor="label"
+            data-cursor-label="Say hi"
             onPointerMove={handlePointerMove}
             onPointerLeave={resetCta}
           >

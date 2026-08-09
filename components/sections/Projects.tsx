@@ -138,6 +138,8 @@ export function Projects() {
             onPointerMove={movePreview}
             onPointerLeave={hidePreview}
             aria-label={`View ${project.title}: ${project.description}`}
+            data-cursor="label"
+            data-cursor-label="View"
           >
             <div className="grid items-center gap-x-6 md:min-h-40 md:grid-cols-[4rem_minmax(0,1fr)_13rem_4rem] lg:min-h-44 lg:grid-cols-[6rem_minmax(0,1fr)_16rem_5rem]">
               <span className="mb-5 text-xs font-semibold tracking-[0.08em] text-muted md:mb-0">

@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { bricolageGrotesque } from "@/lib/fonts";
+import { setCustomCursorLayer } from "@/lib/custom-cursor";
 import { siteConfig } from "@/lib/site-config";
 
 gsap.registerPlugin(useGSAP);
@@ -47,6 +48,7 @@ const closeDialog = (dialog: HTMLDialogElement) => {
 
 export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const cursorLayerRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const closingRef = useRef(false);
@@ -76,6 +78,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
           : document.querySelector<HTMLElement>('[aria-controls="hero-menu"]');
 
       showDialog(dialog);
+      setCustomCursorLayer(cursorLayerRef.current);
       document.body.style.overflow = "hidden";
 
       if (reducedMotion) {
@@ -121,6 +124,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
       return () => {
         window.cancelAnimationFrame(focusFrame);
         document.body.style.overflow = previousOverflow;
+        setCustomCursorLayer(null);
         closeDialog(dialog);
       };
     },
@@ -150,6 +154,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
 
       const finishClose = () => {
         const returnFocus = returnFocusRef.current;
+        setCustomCursorLayer(null);
         closeDialog(dialog);
         onOpenChange(false);
         closingRef.current = false;
@@ -224,11 +229,12 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
         Primary navigation
       </h2>
 
-      <div className="menu-overlay-topbar absolute inset-x-0 z-10 flex items-center justify-between">
+      <div className="menu-overlay-topbar absolute inset-x-0 z-20 flex items-center justify-between">
         <Link
           href="/"
           className="editorial-label transition-opacity hover:opacity-55 max-sm:text-[16px]! lg:text-[18px]!"
           aria-label={`${siteConfig.name}, home`}
+          data-cursor="fill"
           onClick={() => closeMenu()}
         >
           {siteConfig.shortName}
@@ -236,13 +242,17 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
         <button
           type="button"
           className="editorial-label cursor-pointer transition-opacity hover:opacity-55 max-sm:text-[16px]! lg:text-[18px]!"
+          data-cursor="fill"
           onClick={() => closeMenu()}
         >
           Close
         </button>
       </div>
 
-      <nav className="absolute inset-0 grid place-items-center" aria-label="Menu">
+      <nav
+        className="absolute inset-0 z-10 grid place-items-center"
+        aria-label="Menu"
+      >
         <ul
           className={`${bricolageGrotesque.className} menu-overlay-links flex flex-col items-center gap-[clamp(4.25rem,3.2svh,2.25rem)] text-center`}
         >
@@ -252,6 +262,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
                 ref={index === 0 ? firstLinkRef : undefined}
                 href={item.href}
                 className="menu-overlay-link link-line block text-[clamp(2.8rem,7.5vw,7rem)] leading-[0.9] font-medium tracking-[-0.055em]"
+                data-cursor="fill"
                 onClick={(event) => {
                   event.preventDefault();
                   navigateTo(item.href);
@@ -263,6 +274,12 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
           ))}
         </ul>
       </nav>
+
+      <div
+        ref={cursorLayerRef}
+        className="menu-overlay-cursor-layer"
+        aria-hidden="true"
+      />
     </dialog>
   );
 }

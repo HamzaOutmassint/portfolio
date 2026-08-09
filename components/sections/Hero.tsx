@@ -65,7 +65,7 @@ export function Hero() {
       className="hero-frame relative min-h-[100svh] overflow-hidden border-b border-line"
       aria-labelledby="hero-title"
     >
-      <header className={`${bricolageGrotesque.className} hero-topbar absolute inset-x-0 z-30 flex items-center justify-between`}>
+      <header className={`${bricolageGrotesque.className} hero-topbar absolute inset-x-0 z-50 flex items-center justify-between`}>
         <Link
           href="/"
           className="hero-brand editorial-label capitalize! transition-opacity hover:opacity-55 max-sm:text-[16px]! lg:text-[18px]!"
@@ -78,6 +78,7 @@ export function Hero() {
           className="hero-menu-trigger editorial-label cursor-pointer transition-opacity hover:opacity-55 capitalize! font-medium! max-sm:text-[16px]! lg:text-[18px]!"
           aria-expanded={menuOpen}
           aria-controls="hero-menu"
+          data-cursor="fill"
           onClick={openMenu}
         >
           Menu
@@ -100,7 +101,7 @@ export function Hero() {
       </div>
 
       <nav
-        className="hero-socials hero-edge-item absolute z-20"
+        className="hero-socials hero-edge-item absolute z-50"
         aria-label="Social links"
       >
         <ul className="flex flex-col items-start gap-2.5 text-[0.65rem] leading-none font-semibold tracking-[0.12em] uppercase sm:text-[0.7rem]">
@@ -111,6 +112,7 @@ export function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub (opens in a new tab)"
+              data-cursor="social"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -132,6 +134,7 @@ export function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn (opens in a new tab)"
+              data-cursor="social"
             >
               <svg
                 viewBox="0 0 24 24"
