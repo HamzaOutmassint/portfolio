@@ -2,12 +2,13 @@ export const siteConfig = {
   name: "Hamza Outmassint",
   shortName: "Hamza O.",
   role: "Full-stack developer",
+  tagline: "building useful digital products.",
   location: "Marrakech, Morocco",
   timeZone: "Africa/Casablanca",
   // TODO: Replace the placeholder contact details before launch.
   email: "hello@example.com",
-  github: "https://github.com/your-username",
-  linkedin: "https://www.linkedin.com/in/your-username",
+  github: "https://github.com/HamzaOutmassint",
+  linkedin: "https://www.linkedin.com/in/hamza-outmassint/",
 } as const;
 
 export const socialLinks = [
