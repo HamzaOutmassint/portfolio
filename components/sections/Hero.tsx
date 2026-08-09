@@ -5,7 +5,6 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Link from "next/link";
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
-import { LocalTime } from "@/components/ui/LocalTime";
 import { bricolageGrotesque } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site-config";
 
@@ -14,6 +13,7 @@ gsap.registerPlugin(useGSAP);
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const openMenu = () => setMenuOpen(true);
 
   useGSAP(
     () => {
@@ -78,7 +78,7 @@ export function Hero() {
           className="hero-menu-trigger editorial-label cursor-pointer transition-opacity hover:opacity-55 capitalize! font-medium! max-sm:text-[16px]! lg:text-[18px]!"
           aria-expanded={menuOpen}
           aria-controls="hero-menu"
-          onClick={() => setMenuOpen(true)}
+          onClick={openMenu}
         >
           Menu
         </button>
@@ -146,12 +146,11 @@ export function Hero() {
       </nav>
 
       <div className={`${bricolageGrotesque.className} hero-bottom absolute inset-x-0 z-20 flex items-end justify-between gap-6`}>
-        <p className="hero-edge-item flex max-w-[70%] flex-wrap gap-x-2 gap-y-0.5 text-[0.62rem] leading-tight font-medium tracking-[0.08em] uppercase max-sm:text-[15.5px]! sm:max-w-none sm:text-[0.7rem] lg:text-[17px]">
+        <p className="hero-edge-item flex max-w-[70%] flex-wrap gap-x-2 gap-y-0.5 text-[0.62rem] leading-tight font-medium tracking-[0.08em] uppercase max-sm:text-[16px]! sm:max-w-none sm:text-[0.7rem] lg:text-[17px]">
           <span>{siteConfig.location}</span>
-          <span className="text-muted"><LocalTime /></span>
         </p>
         <p
-          className="hero-edge-item shrink-0 rotate-180 text-[0.62rem] leading-none font-medium tracking-[0.1em] uppercase [writing-mode:vertical-rl] max-sm:text-[15.5px]! sm:text-[0.7rem] lg:text-[17px]"
+          className="hero-edge-item shrink-0 rotate-180 text-[0.62rem] leading-none font-medium tracking-[0.1em] uppercase [writing-mode:vertical-rl] max-sm:text-[16px]! sm:text-[0.7rem] lg:text-[17px]"
           aria-label="Sound is off and unavailable"
         >
           Sound <span className="font-semibold">off</span>

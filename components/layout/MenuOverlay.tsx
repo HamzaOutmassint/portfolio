@@ -20,6 +20,31 @@ const navigationItems = [
   { label: "Contact", href: "#contact" },
 ] as const;
 
+const isDialogOpen = (dialog: HTMLDialogElement) =>
+  dialog.open || dialog.hasAttribute("open");
+
+const showDialog = (dialog: HTMLDialogElement) => {
+  if (isDialogOpen(dialog)) return;
+
+  if (typeof dialog.showModal === "function") {
+    dialog.showModal();
+    return;
+  }
+
+  dialog.setAttribute("open", "");
+};
+
+const closeDialog = (dialog: HTMLDialogElement) => {
+  if (!isDialogOpen(dialog)) return;
+
+  if (typeof dialog.close === "function") {
+    dialog.close();
+    return;
+  }
+
+  dialog.removeAttribute("open");
+};
+
 export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
@@ -50,9 +75,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
           ? activeElement
           : document.querySelector<HTMLElement>('[aria-controls="hero-menu"]');
 
-      if (!dialog.open) {
-        dialog.showModal();
-      }
+      showDialog(dialog);
       document.body.style.overflow = "hidden";
 
       if (reducedMotion) {
@@ -98,9 +121,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
       return () => {
         window.cancelAnimationFrame(focusFrame);
         document.body.style.overflow = previousOverflow;
-        if (dialog.open) {
-          dialog.close();
-        }
+        closeDialog(dialog);
       };
     },
     { scope: dialogRef, dependencies: [open], revertOnUpdate: true },
@@ -110,7 +131,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
     contextSafe(() => {
       const dialog = dialogRef.current;
 
-      if (!dialog?.open || closingRef.current) {
+      if (!dialog || !isDialogOpen(dialog) || closingRef.current) {
         return;
       }
 
@@ -129,7 +150,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
 
       const finishClose = () => {
         const returnFocus = returnFocusRef.current;
-        dialog.close();
+        closeDialog(dialog);
         onOpenChange(false);
         closingRef.current = false;
         window.requestAnimationFrame(() => {

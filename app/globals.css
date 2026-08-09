@@ -49,6 +49,17 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+.hero-menu-trigger {
+  position: relative;
+  touch-action: manipulation;
+}
+
+.hero-menu-trigger::before {
+  position: absolute;
+  inset: -0.75rem;
+  content: "";
+}
+
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--accent);
