@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { bricolageGrotesque } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site-config";
 
 gsap.registerPlugin(useGSAP);
@@ -14,7 +15,7 @@ type MenuOverlayProps = {
 };
 
 const navigationItems = [
-  { label: "About", href: "#about" },
+  { label: "About me", href: "#about" },
   { label: "Projects", href: "#work" },
   { label: "Contact", href: "#contact" },
 ] as const;
@@ -74,19 +75,19 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
           .set(links, { y: 24, autoAlpha: 0 })
           .to(dialog, {
             clipPath: "inset(0% 0% 0% 0%)",
-            duration: 0.78,
+            duration: 1.02,
             ease: "power4.inOut",
           })
-          .to(topbar, { y: 0, autoAlpha: 1, duration: 0.4 }, 0.26)
+          .to(topbar, { y: 0, autoAlpha: 1, duration: 0.52 }, 0.34)
           .to(
             links,
             {
               y: 0,
               autoAlpha: 1,
-              duration: 0.48,
-              stagger: 0.07,
+              duration: 0.6,
+              stagger: 0.09,
             },
-            0.34,
+            0.44,
           );
       }
 
@@ -149,25 +150,25 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
           {
             y: -14,
             autoAlpha: 0,
-            duration: 0.24,
-            stagger: { each: 0.035, from: "end" },
+            duration: 0.32,
+            stagger: { each: 0.05, from: "end" },
             ease: "power2.in",
           },
           0,
         )
         .to(
           topbar,
-          { y: -10, autoAlpha: 0, duration: 0.22, ease: "power2.in" },
+          { y: -10, autoAlpha: 0, duration: 0.3, ease: "power2.in" },
           0,
         )
         .to(
           dialog,
           {
             clipPath: "inset(0% 0% 100% 0%)",
-            duration: 0.72,
+            duration: 0.94,
             ease: "power4.inOut",
           },
-          0.08,
+          0.12,
         );
     })();
   };
@@ -202,10 +203,10 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
         Primary navigation
       </h2>
 
-      <div className="menu-overlay-topbar absolute inset-x-0 flex items-center justify-between">
+      <div className="menu-overlay-topbar absolute inset-x-0 z-10 flex items-center justify-between">
         <Link
           href="/"
-          className="editorial-label transition-opacity hover:opacity-55"
+          className="editorial-label transition-opacity hover:opacity-55 max-sm:text-[16px]! lg:text-[18px]!"
           aria-label={`${siteConfig.name}, home`}
           onClick={() => closeMenu()}
         >
@@ -213,7 +214,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
         </Link>
         <button
           type="button"
-          className="editorial-label cursor-pointer transition-opacity hover:opacity-55"
+          className="editorial-label cursor-pointer transition-opacity hover:opacity-55 max-sm:text-[16px]! lg:text-[18px]!"
           onClick={() => closeMenu()}
         >
           Close
@@ -221,13 +222,15 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
       </div>
 
       <nav className="absolute inset-0 grid place-items-center" aria-label="Menu">
-        <ul className="menu-overlay-links flex flex-col items-center gap-[clamp(0.7rem,2.1svh,1.4rem)] text-center">
+        <ul
+          className={`${bricolageGrotesque.className} menu-overlay-links flex flex-col items-center gap-[clamp(4.25rem,3.2svh,2.25rem)] text-center`}
+        >
           {navigationItems.map((item, index) => (
             <li key={item.href}>
               <a
                 ref={index === 0 ? firstLinkRef : undefined}
                 href={item.href}
-                className="menu-overlay-link link-line block text-[clamp(2.8rem,7.5vw,7rem)] leading-[0.9] font-medium tracking-[-0.055em] uppercase"
+                className="menu-overlay-link link-line block text-[clamp(2.8rem,7.5vw,7rem)] leading-[0.9] font-medium tracking-[-0.055em]"
                 onClick={(event) => {
                   event.preventDefault();
                   navigateTo(item.href);

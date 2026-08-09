@@ -4,17 +4,12 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Link from "next/link";
-import { Bricolage_Grotesque } from "next/font/google";
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
 import { LocalTime } from "@/components/ui/LocalTime";
+import { bricolageGrotesque } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site-config";
 
 gsap.registerPlugin(useGSAP);
-
-const bricolageGrotesque = Bricolage_Grotesque({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
