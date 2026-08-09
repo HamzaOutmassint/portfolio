@@ -18,7 +18,7 @@ type CursorState = {
 
 const cursorStates: Record<CursorVariant, CursorState> = {
   default: { size: 20, filled: false },
-  fill: { size: 64, filled: true },
+  fill: { size: 48, filled: true },
   social: { size: 46, filled: false },
   label: { size: 64, filled: true },
 };
@@ -44,6 +44,9 @@ const getCursorVariant = (target: HTMLElement | null): CursorVariant => {
     ? variant
     : "default";
 };
+
+const getCursorInvertText = (target: HTMLElement | null) =>
+  target?.querySelector<HTMLElement>("[data-cursor-invert]") ?? null;
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -89,6 +92,53 @@ export function CustomCursor() {
       let enabled = false;
       let currentTarget: HTMLElement | null = null;
       let currentTone: CursorTone = "dark";
+      let currentInvertText: HTMLElement | null = null;
+      let currentInvertRect: DOMRect | null = null;
+
+      const refreshInvertRect = () => {
+        currentInvertRect = currentInvertText?.getBoundingClientRect() ?? null;
+      };
+
+      const invertResizeObserver = new ResizeObserver(refreshInvertRect);
+
+      const updateInvertTarget = (target: HTMLElement | null) => {
+        const nextInvertText = getCursorInvertText(target);
+
+        if (nextInvertText === currentInvertText) return;
+
+        invertResizeObserver.disconnect();
+        currentInvertText?.style.setProperty("--cursor-invert-radius", "0px");
+        currentInvertText = nextInvertText;
+        currentInvertRect = null;
+
+        if (currentInvertText) {
+          refreshInvertRect();
+          invertResizeObserver.observe(currentInvertText);
+        }
+      };
+
+      const updateInvertMask = () => {
+        if (!currentInvertText || !currentInvertRect) return;
+
+        const cursorX = Number.parseFloat(String(gsap.getProperty(cursor, "x")));
+        const cursorY = Number.parseFloat(String(gsap.getProperty(cursor, "y")));
+        const cursorWidth = Number.parseFloat(
+          String(gsap.getProperty(cursor, "width")),
+        );
+
+        currentInvertText.style.setProperty(
+          "--cursor-invert-x",
+          `${cursorX - currentInvertRect.left}px`,
+        );
+        currentInvertText.style.setProperty(
+          "--cursor-invert-y",
+          `${cursorY - currentInvertRect.top}px`,
+        );
+        currentInvertText.style.setProperty(
+          "--cursor-invert-radius",
+          `${cursorWidth / 2}px`,
+        );
+      };
 
       const xTo = gsap.quickTo(cursor, "x", {
         duration: 0.18,
@@ -165,6 +215,8 @@ export function CustomCursor() {
           currentTone = tone;
           updateCursorState(target, tone);
         }
+
+        updateInvertTarget(target);
       });
 
       const handleWindowMouseOut = safe((event: MouseEvent) => {
@@ -181,12 +233,25 @@ export function CustomCursor() {
         });
         window.addEventListener("mouseout", handleWindowMouseOut);
         window.addEventListener("blur", handleWindowBlur);
+        window.addEventListener("resize", refreshInvertRect, {
+          passive: true,
+        });
+        window.addEventListener("scroll", refreshInvertRect, {
+          passive: true,
+          capture: true,
+        });
+        gsap.ticker.add(updateInvertMask);
       };
 
       const removePointerListeners = () => {
         window.removeEventListener("pointermove", handlePointerMove);
         window.removeEventListener("mouseout", handleWindowMouseOut);
         window.removeEventListener("blur", handleWindowBlur);
+        window.removeEventListener("resize", refreshInvertRect);
+        window.removeEventListener("scroll", refreshInvertRect, true);
+        gsap.ticker.remove(updateInvertMask);
+        invertResizeObserver.disconnect();
+        updateInvertTarget(null);
       };
 
       const disableCursor = () => {

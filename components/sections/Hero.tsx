@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Link from "next/link";
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
+import { CursorInvertText } from "@/components/ui/CursorInvertText";
 import { bricolageGrotesque } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site-config";
 
@@ -75,13 +76,13 @@ export function Hero() {
         </Link>
         <button
           type="button"
-          className="hero-menu-trigger editorial-label cursor-pointer transition-opacity hover:opacity-55 capitalize! font-medium! max-sm:text-[16px]! lg:text-[18px]!"
+          className="hero-menu-trigger editorial-label cursor-pointer capitalize! font-medium! max-sm:text-[16px]! lg:text-[18px]!"
           aria-expanded={menuOpen}
           aria-controls="hero-menu"
           data-cursor="fill"
           onClick={openMenu}
         >
-          Menu
+          <CursorInvertText>Menu</CursorInvertText>
         </button>
       </header>
 

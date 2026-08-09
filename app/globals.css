@@ -83,6 +83,41 @@ button {
   cursor: none !important;
 }
 
+.cursor-invert-text {
+  --cursor-invert-radius: 0px;
+  --cursor-invert-x: 0px;
+  --cursor-invert-y: 0px;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  color: var(--ink);
+  line-height: inherit;
+}
+
+.cursor-invert-text-base {
+  display: block;
+}
+
+.cursor-invert-text-overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  color: #fff;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (pointer: fine) and (hover: hover) {
+  .custom-cursor-active .cursor-invert-text-overlay {
+    display: block;
+    clip-path: circle(
+      var(--cursor-invert-radius) at var(--cursor-invert-x)
+        var(--cursor-invert-y)
+    );
+    will-change: clip-path;
+  }
+}
+
 .menu-overlay .custom-cursor {
   position: absolute;
   z-index: 0;

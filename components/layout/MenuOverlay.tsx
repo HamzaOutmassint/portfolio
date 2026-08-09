@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { CursorInvertText } from "@/components/ui/CursorInvertText";
 import { bricolageGrotesque } from "@/lib/fonts";
 import { setCustomCursorLayer } from "@/lib/custom-cursor";
 import { siteConfig } from "@/lib/site-config";
@@ -232,20 +233,20 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
       <div className="menu-overlay-topbar absolute inset-x-0 z-20 flex items-center justify-between">
         <Link
           href="/"
-          className="editorial-label transition-opacity hover:opacity-55 max-sm:text-[16px]! lg:text-[18px]!"
+          className="editorial-label max-sm:text-[16px]! lg:text-[18px]!"
           aria-label={`${siteConfig.name}, home`}
           data-cursor="fill"
           onClick={() => closeMenu()}
         >
-          {siteConfig.shortName}
+          <CursorInvertText>{siteConfig.shortName}</CursorInvertText>
         </Link>
         <button
           type="button"
-          className="editorial-label cursor-pointer transition-opacity hover:opacity-55 max-sm:text-[16px]! lg:text-[18px]!"
+          className="editorial-label cursor-pointer max-sm:text-[16px]! lg:text-[18px]!"
           data-cursor="fill"
           onClick={() => closeMenu()}
         >
-          Close
+          <CursorInvertText>Close</CursorInvertText>
         </button>
       </div>
 
@@ -268,7 +269,7 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
                   navigateTo(item.href);
                 }}
               >
-                {item.label}
+                <CursorInvertText>{item.label}</CursorInvertText>
               </a>
             </li>
           ))}
