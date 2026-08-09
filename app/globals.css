@@ -98,6 +98,23 @@ button:focus-visible {
   transform-origin: left;
 }
 
+.availability-dot {
+  animation: availability-breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes availability-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -110,5 +127,9 @@ button:focus-visible {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+
+  .availability-dot {
+    animation: none;
   }
 }
