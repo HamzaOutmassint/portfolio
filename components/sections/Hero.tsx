@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import Image from "next/image";
 import Link from "next/link";
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
 import { CursorInvertText } from "@/components/ui/CursorInvertText";
@@ -66,6 +67,14 @@ export function Hero() {
       className="hero-frame relative min-h-[100svh] overflow-hidden border-b border-line"
       aria-labelledby="hero-title"
     >
+      <Image
+        src="/bg.jpg"
+        alt=""
+        fill
+        preload
+        sizes="100vw"
+        className="hero-background-image"
+      />
       <header className={`${bricolageGrotesque.className} hero-topbar absolute inset-x-0 z-50 flex items-center justify-between`}>
         <Link
           href="/"

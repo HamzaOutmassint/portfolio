@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -15,9 +15,70 @@ type QuickTo = ReturnType<typeof gsap.quickTo>;
 export function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const projectRowRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const xTo = useRef<QuickTo | null>(null);
   const yTo = useRef<QuickTo | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [isCompactViewport, setIsCompactViewport] = useState(false);
+  const [visibleProjectIndexes, setVisibleProjectIndexes] = useState<Set<number>>(
+    () => new Set(),
+  );
+
+  useEffect(() => {
+    const compactViewportQuery = window.matchMedia("(max-width: 767px)");
+    const updateViewport = () => setIsCompactViewport(compactViewportQuery.matches);
+
+    updateViewport();
+    compactViewportQuery.addEventListener("change", updateViewport);
+
+    return () => compactViewportQuery.removeEventListener("change", updateViewport);
+  }, []);
+
+  useEffect(() => {
+    if (!isCompactViewport) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      const fallbackFrame = window.requestAnimationFrame(() => {
+        setVisibleProjectIndexes(new Set(projects.map((_, index) => index)));
+      });
+
+      return () => window.cancelAnimationFrame(fallbackFrame);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const nextIndexes = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => Number((entry.target as HTMLElement).dataset.projectIndex));
+
+        if (!nextIndexes.length) return;
+
+        setVisibleProjectIndexes((visibleIndexes) => {
+          const nextVisibleIndexes = new Set(visibleIndexes);
+          let changed = false;
+
+          nextIndexes.forEach((index) => {
+            if (nextVisibleIndexes.has(index)) return;
+            nextVisibleIndexes.add(index);
+            changed = true;
+          });
+
+          return changed ? nextVisibleIndexes : visibleIndexes;
+        });
+
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry) => observer.unobserve(entry.target));
+      },
+      { threshold: 0.01 },
+    );
+
+    projectRowRefs.current.forEach((row) => {
+      if (row) observer.observe(row);
+    });
+
+    return () => observer.disconnect();
+  }, [isCompactViewport]);
 
   useGSAP(
     () => {
@@ -65,8 +126,11 @@ export function Projects() {
     window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
     !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const movePreview = (event: React.PointerEvent) => {
+  const movePreview = (event: React.PointerEvent, immediate = false) => {
     if (!canPreview()) return;
+
+    const preview = previewRef.current;
+    if (!preview) return;
 
     const width = Math.min(390, window.innerWidth * 0.29);
     const height = width * 0.66;
@@ -82,8 +146,13 @@ export function Projects() {
       event.clientY - height / 2,
     );
 
-    xTo.current?.(x);
-    yTo.current?.(y);
+    if (immediate || !xTo.current || !yTo.current) {
+      gsap.set(preview, { x, y });
+      return;
+    }
+
+    xTo.current(x);
+    yTo.current(y);
   };
 
   const showPreview = (
@@ -92,13 +161,13 @@ export function Projects() {
   ) => {
     if (!canPreview()) return;
     setActiveIndex(index);
-    movePreview(event);
+    movePreview(event, true);
     gsap.to(previewRef.current, {
       autoAlpha: 1,
       scale: 1,
       duration: 0.3,
       ease: "power2.out",
-      overwrite: true,
+      overwrite: "auto",
     });
   };
 
@@ -108,7 +177,7 @@ export function Projects() {
       scale: 0.94,
       duration: 0.25,
       ease: "power2.out",
-      overwrite: true,
+      overwrite: "auto",
     });
   };
 
@@ -129,9 +198,17 @@ export function Projects() {
       </div>
 
       <div className="projects-list border-t border-line">
-        {projects.map((project, index) => (
-          <Link
+        {projects.map((project, index) => {
+          const shouldLoadMobileImage =
+            isCompactViewport && visibleProjectIndexes.has(index);
+
+          return (
+            <Link
             key={project.slug}
+            ref={(element) => {
+              projectRowRefs.current[index] = element;
+            }}
+            data-project-index={index}
             href={`/work/${project.slug}`}
             className="project-row group block border-b border-line py-6 transition-colors duration-300 hover:border-ink sm:py-8 md:py-0"
             onPointerEnter={(event) => showPreview(index, event)}
@@ -140,7 +217,7 @@ export function Projects() {
             aria-label={`View ${project.title}: ${project.description}`}
             data-cursor="label"
             data-cursor-label="View"
-          >
+            >
             <div className="grid items-center gap-x-6 md:min-h-40 md:grid-cols-[4rem_minmax(0,1fr)_13rem_4rem] lg:min-h-44 lg:grid-cols-[6rem_minmax(0,1fr)_16rem_5rem]">
               <span className="mb-5 text-xs font-semibold tracking-[0.08em] text-muted md:mb-0">
                 0{index + 1}
@@ -171,16 +248,20 @@ export function Projects() {
             </div>
 
             <div className="relative mt-6 aspect-[16/10] overflow-hidden bg-[#dedbd0] md:hidden">
-              <Image
-                src={project.image}
-                alt={project.imageAlt}
-                fill
-                sizes="(max-width: 767px) calc(100vw - 2.5rem), 1px"
-                className="object-cover"
-              />
+              {shouldLoadMobileImage && (
+                <Image
+                  src={project.image}
+                  alt={project.imageAlt}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 767px) calc(100vw - 2.5rem), 1px"
+                  className="object-cover"
+                />
+              )}
             </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
 
       <div
@@ -188,14 +269,17 @@ export function Projects() {
         className="pointer-events-none fixed top-0 left-0 z-50 hidden aspect-[3/2] w-[min(29vw,390px)] overflow-hidden bg-[#dedbd0] shadow-[0_24px_65px_rgba(23,23,20,0.18)] md:block"
         aria-hidden="true"
       >
-        <Image
-          key={projects[activeIndex].image}
-          src={projects[activeIndex].image}
-          alt=""
-          fill
-          sizes="(max-width: 1279px) 29vw, 390px"
-          className="object-cover"
-        />
+        {activeIndex !== null && (
+          <Image
+            key={projects[activeIndex].image}
+            src={projects[activeIndex].image}
+            alt=""
+            fill
+            loading="eager"
+            sizes="(max-width: 1279px) 29vw, 390px"
+            className="object-cover"
+          />
+        )}
       </div>
     </section>
   );

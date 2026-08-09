@@ -164,21 +164,22 @@ button:focus-visible {
   --hero-gutter: max(var(--page-gutter), env(safe-area-inset-left));
   --hero-edge-y: clamp(1.25rem, 3svh, 2rem);
   background-color: var(--canvas);
-  background-image: url("/bg.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+}
+
+.hero-background-image {
+  object-fit: cover;
+  object-position: center;
 }
 
 @media (max-width: 1023px) {
-  .hero-frame {
-    background-position: 54% center;
+  .hero-background-image {
+    object-position: 54% center;
   }
 }
 
 @media (max-width: 639px) {
-  .hero-frame {
-    background-position: 60% center;
+  .hero-background-image {
+    object-position: 60% center;
   }
 }
 
