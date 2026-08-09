@@ -116,7 +116,7 @@ export function Projects() {
     <section
       ref={sectionRef}
       id="work"
-      className="page-shell py-[var(--section-space)]"
+      className="page-shell py-[var(--section-space-compact)]"
       aria-labelledby="work-title"
     >
       <div className="mb-12 flex items-end justify-between sm:mb-20">

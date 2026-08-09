@@ -8,7 +8,7 @@ export function About() {
   return (
     <section
       id="about"
-      className="page-shell py-[var(--section-space)]"
+      className="page-shell py-[var(--section-space-compact)]"
       aria-labelledby="about-title"
     >
       <div className="grid gap-14 lg:grid-cols-12 lg:gap-6">

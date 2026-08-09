@@ -11,6 +11,7 @@
   --dark-muted: #a6a49c;
   --page-gutter: clamp(1.25rem, 3.2vw, 3.75rem);
   --section-space: clamp(6rem, 12vw, 11rem);
+  --section-space-compact: clamp(3.5rem, 7vw, 6.5rem);
 }
 
 @theme inline {
