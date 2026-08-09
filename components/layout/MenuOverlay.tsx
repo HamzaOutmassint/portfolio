@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { siteConfig } from "@/lib/site-config";
+
+gsap.registerPlugin(useGSAP);
 
 type MenuOverlayProps = {
   open: boolean;
@@ -15,74 +19,157 @@ const navigationItems = [
   { label: "Contact", href: "#contact" },
 ] as const;
 
-const closeDuration = 220;
-
 export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
-  const closeTimerRef = useRef<number | null>(null);
+  const closingRef = useRef(false);
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
+  const { contextSafe } = useGSAP(
+    () => {
+      const dialog = dialogRef.current;
 
-    if (!open || !dialog) {
-      return;
-    }
-
-    const activeElement = document.activeElement as HTMLElement | null;
-    returnFocusRef.current =
-      activeElement && activeElement !== document.body
-        ? activeElement
-        : document.querySelector<HTMLElement>('[aria-controls="hero-menu"]');
-    const previousOverflow = document.body.style.overflow;
-
-    dialog.dataset.state = "open";
-    if (!dialog.open) {
-      dialog.showModal();
-    }
-    document.body.style.overflow = "hidden";
-
-    const focusFrame = window.requestAnimationFrame(() => {
-      firstLinkRef.current?.focus();
-    });
-
-    return () => {
-      window.cancelAnimationFrame(focusFrame);
-      document.body.style.overflow = previousOverflow;
-      if (dialog.open) {
-        dialog.close();
+      if (!open || !dialog) {
+        return;
       }
-    };
-  }, [open]);
 
-  useEffect(
-    () => () => {
-      if (closeTimerRef.current !== null) {
-        window.clearTimeout(closeTimerRef.current);
+      const topbar = dialog.querySelector<HTMLElement>(".menu-overlay-topbar");
+      const links = Array.from(
+        dialog.querySelectorAll<HTMLElement>(".menu-overlay-link"),
+      );
+      const activeElement = document.activeElement as HTMLElement | null;
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const previousOverflow = document.body.style.overflow;
+
+      closingRef.current = false;
+      returnFocusRef.current =
+        activeElement && activeElement !== document.body
+          ? activeElement
+          : document.querySelector<HTMLElement>('[aria-controls="hero-menu"]');
+
+      if (!dialog.open) {
+        dialog.showModal();
       }
+      document.body.style.overflow = "hidden";
+
+      if (reducedMotion) {
+        gsap.set(dialog, {
+          clipPath: "inset(0% 0% 0% 0%)",
+          autoAlpha: 1,
+        });
+        gsap.set([topbar, ...links], { y: 0, autoAlpha: 1 });
+      } else {
+        const openingTimeline = gsap.timeline({
+          defaults: { ease: "power3.out" },
+        });
+
+        openingTimeline
+          .set(dialog, {
+            clipPath: "inset(0% 0% 100% 0%)",
+            autoAlpha: 1,
+          })
+          .set(topbar, { y: -12, autoAlpha: 0 })
+          .set(links, { y: 24, autoAlpha: 0 })
+          .to(dialog, {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 0.78,
+            ease: "power4.inOut",
+          })
+          .to(topbar, { y: 0, autoAlpha: 1, duration: 0.4 }, 0.26)
+          .to(
+            links,
+            {
+              y: 0,
+              autoAlpha: 1,
+              duration: 0.48,
+              stagger: 0.07,
+            },
+            0.34,
+          );
+      }
+
+      const focusFrame = window.requestAnimationFrame(() => {
+        firstLinkRef.current?.focus();
+      });
+
+      return () => {
+        window.cancelAnimationFrame(focusFrame);
+        document.body.style.overflow = previousOverflow;
+        if (dialog.open) {
+          dialog.close();
+        }
+      };
     },
-    [],
+    { scope: dialogRef, dependencies: [open], revertOnUpdate: true },
   );
 
   const closeMenu = (afterClose?: () => void) => {
-    const dialog = dialogRef.current;
+    contextSafe(() => {
+      const dialog = dialogRef.current;
 
-    if (!dialog?.open || dialog.dataset.state === "closing") {
-      return;
-    }
+      if (!dialog?.open || closingRef.current) {
+        return;
+      }
 
-    dialog.dataset.state = "closing";
-    closeTimerRef.current = window.setTimeout(() => {
-      const returnFocus = returnFocusRef.current;
-      dialog.close();
-      onOpenChange(false);
-      closeTimerRef.current = null;
-      window.requestAnimationFrame(() => {
-        returnFocus?.focus();
-        afterClose?.();
-      });
-    }, closeDuration);
+      const topbar = dialog.querySelector<HTMLElement>(
+        ".menu-overlay-topbar",
+      );
+      const links = Array.from(
+        dialog.querySelectorAll<HTMLElement>(".menu-overlay-link"),
+      );
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      closingRef.current = true;
+      gsap.killTweensOf([dialog, topbar, ...links]);
+
+      const finishClose = () => {
+        const returnFocus = returnFocusRef.current;
+        dialog.close();
+        onOpenChange(false);
+        closingRef.current = false;
+        window.requestAnimationFrame(() => {
+          returnFocus?.focus();
+          afterClose?.();
+        });
+      };
+
+      if (reducedMotion) {
+        finishClose();
+        return;
+      }
+
+      gsap
+        .timeline({ onComplete: finishClose })
+        .to(
+          links,
+          {
+            y: -14,
+            autoAlpha: 0,
+            duration: 0.24,
+            stagger: { each: 0.035, from: "end" },
+            ease: "power2.in",
+          },
+          0,
+        )
+        .to(
+          topbar,
+          { y: -10, autoAlpha: 0, duration: 0.22, ease: "power2.in" },
+          0,
+        )
+        .to(
+          dialog,
+          {
+            clipPath: "inset(0% 0% 100% 0%)",
+            duration: 0.72,
+            ease: "power4.inOut",
+          },
+          0.08,
+        );
+    })();
   };
 
   const navigateTo = (href: string) => {

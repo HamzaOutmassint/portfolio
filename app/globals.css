@@ -107,63 +107,12 @@ button:focus-visible {
   border: 0;
   background: var(--canvas);
   color: var(--ink);
-  opacity: 0;
+  opacity: 1;
+  will-change: clip-path;
 }
 
 .menu-overlay::backdrop {
   background: transparent;
-}
-
-.menu-overlay[open][data-state="open"] {
-  animation: menu-overlay-in 260ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.menu-overlay[open][data-state="closing"] {
-  animation: menu-overlay-out 220ms cubic-bezier(0.64, 0, 0.78, 0) forwards;
-}
-
-.menu-overlay[open][data-state="open"] .menu-overlay-link {
-  animation: menu-link-in 440ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.menu-overlay[open][data-state="open"] li:nth-child(2) .menu-overlay-link {
-  animation-delay: 45ms;
-}
-
-.menu-overlay[open][data-state="open"] li:nth-child(3) .menu-overlay-link {
-  animation-delay: 90ms;
-}
-
-@keyframes menu-overlay-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes menu-overlay-out {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes menu-link-in {
-  from {
-    opacity: 0;
-    transform: translateY(1.25rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .editorial-label {
