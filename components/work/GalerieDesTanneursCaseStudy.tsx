@@ -104,12 +104,9 @@ import {
   Overview,
 } from "@/components/work/CaseStudyPrimitives";
 
-const galleryImageSizes =
-  "(max-width: 767px) calc(100vw - 2.5rem), (max-width: 1600px) 88vw, 1400px";
-
 export function GalerieDesTanneursCaseStudy() {
   return (
-    <div>
+    <div className="page-shell case-study-content py-[var(--section-space)]">
       <div className="mt-[var(--case-study-space)]">
         <Overview detail="A connected retail platform bringing products, inventory, stock movements, sales and operational workflows into one system.">
           A full retail management platform built to connect back-office operations with the day-to-day reality of the point of sale.
@@ -146,7 +143,7 @@ export function GalerieDesTanneursCaseStudy() {
           />
         </div>
 
-        <div className="lg:col-span-3 lg:col-start-10 lg:pt-16">
+        <div className="lg:col-span-3 lg:col-start-10">
           <NumberedBlock number="02" title="Inventory operations">
             Stock moves between the warehouse and stores through traceable
             transfer workflows, keeping every location connected.
@@ -154,38 +151,40 @@ export function GalerieDesTanneursCaseStudy() {
         </div>
       </section>
 
-      <section className="mt-[var(--case-study-space)]">
-        <div className="mb-8 max-w-md">
+      <section className="mt-[var(--case-study-space)] grid gap-10 lg:grid-cols-12 lg:items-start">
+        <div className="lg:col-span-3">
           <NumberedBlock number="03" title="Point of sale">
             A touch-first checkout experience keeps products, clients, sellers,
             discounts and payments accessible without slowing down the sale.
           </NumberedBlock>
         </div>
 
-        <CaseStudyImage
-          src="/projects/galerie-des-tanneurs/POS.png"
-          alt="Galerie des Tanneurs point of sale interface with basket, payment controls and numeric keypad"
-          width={1911}
-          height={882}
-          sizes={galleryImageSizes}
-        />
+        <div className="lg:col-span-9 lg:col-start-4">
+          <CaseStudyImage
+            src="/projects/galerie-des-tanneurs/POS.png"
+            alt="Galerie des Tanneurs point of sale interface with basket, payment controls and numeric keypad"
+            width={1911}
+            height={882}
+            sizes="(max-width: 1023px) calc(100vw - 2.5rem), (max-width: 1600px) 70vw, 1120px"
+          />
+        </div>
       </section>
 
       <section className="mt-[var(--case-study-space)] grid gap-10 lg:grid-cols-12 lg:items-start">
-        <div className="lg:col-span-3">
+        <div className="lg:order-2 lg:col-span-3 lg:col-start-10">
           <NumberedBlock number="04" title="Transaction history">
             Every sale remains traceable after checkout through its ticket,
             products, payments, client and seller information.
           </NumberedBlock>
         </div>
 
-        <div className="lg:col-span-9 lg:col-start-4">
+        <div className="lg:order-1 lg:col-span-8">
           <CaseStudyImage
             src="/projects/galerie-des-tanneurs/transaction-details.png"
             alt="Galerie des Tanneurs transaction detail interface showing products, sellers and payment breakdown"
             width={1911}
             height={882}
-            sizes="(max-width: 1023px) calc(100vw - 2.5rem), (max-width: 1600px) 70vw, 1120px"
+            sizes="(max-width: 1023px) calc(100vw - 2.5rem), (max-width: 1600px) 63vw, 1010px"
           />
         </div>
       </section>
