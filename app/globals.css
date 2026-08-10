@@ -237,6 +237,24 @@ button:focus-visible {
   text-transform: uppercase;
 }
 
+.case-study-content {
+  --case-study-space: clamp(4.5rem, 9vw, 9rem);
+}
+
+.case-study-visual {
+  margin: 0;
+}
+
+.voyspire-showcase-viewport {
+  height: clamp(32rem, 76svh, 50rem);
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  .voyspire-showcase-viewport {
+    height: clamp(30rem, 62svh, 42rem);
+  }
+}
+
 .link-line {
   position: relative;
 }
