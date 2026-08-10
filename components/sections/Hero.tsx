@@ -6,6 +6,7 @@ import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 import { MenuOverlay } from "@/components/layout/MenuOverlay";
+import { useSound } from "@/components/sound/SoundProvider";
 import { CursorInvertText } from "@/components/ui/CursorInvertText";
 import { bricolageGrotesque } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site-config";
@@ -15,6 +16,7 @@ gsap.registerPlugin(useGSAP);
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { soundEnabled, toggleSound } = useSound();
   const openMenu = () => setMenuOpen(true);
 
   useGSAP(
@@ -158,16 +160,25 @@ export function Hero() {
         </ul>
       </nav>
 
-      <div className={`${bricolageGrotesque.className} hero-bottom absolute inset-x-0 z-20 flex items-end justify-between gap-6`}>
+      <div className={`${bricolageGrotesque.className} hero-bottom absolute inset-x-0 z-50 flex items-end justify-between gap-6`}>
         <p className="hero-edge-item flex max-w-[70%] flex-wrap gap-x-2 gap-y-0.5 text-[0.62rem] leading-tight font-medium tracking-[0.08em] uppercase max-sm:text-[16px]! sm:max-w-none sm:text-[0.7rem] lg:text-[17px]">
           <span>{siteConfig.location}</span>
         </p>
-        <p
-          className="hero-edge-item shrink-0 rotate-180 text-[0.62rem] leading-none font-medium tracking-[0.1em] uppercase [writing-mode:vertical-rl] max-sm:text-[16px]! sm:text-[0.7rem] lg:text-[17px]"
-          aria-label="Sound is off and unavailable"
+        <button
+          type="button"
+          className="hero-menu-trigger hero-edge-item shrink-0 rotate-180 cursor-pointer border-0 bg-transparent p-0 text-[0.62rem] leading-none font-medium tracking-[0.1em] uppercase [writing-mode:vertical-rl] max-sm:text-[16px]! sm:text-[0.7rem] lg:text-[17px]"
+          aria-pressed={soundEnabled}
+          aria-label={
+            soundEnabled ? "Disable ambient sound" : "Enable ambient sound"
+          }
+          data-cursor="fill"
+          data-cursor-invert-reverse="true"
+          onClick={toggleSound}
         >
-          Sound <span className="font-semibold">off</span>
-        </p>
+          <CursorInvertText>
+            Sound <span className="font-semibold">{soundEnabled ? "on" : "off"}</span>
+          </CursorInvertText>
+        </button>
       </div>
 
       <MenuOverlay open={menuOpen} onOpenChange={setMenuOpen} />

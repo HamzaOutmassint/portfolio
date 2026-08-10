@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { SoundProvider } from "@/components/sound/SoundProvider";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import "./globals.css";
 
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={geist.variable}>
       <body>
         <CustomCursor />
-        {children}
+        <SoundProvider>{children}</SoundProvider>
       </body>
     </html>
   );

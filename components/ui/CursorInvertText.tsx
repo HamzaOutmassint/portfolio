@@ -1,5 +1,7 @@
+import type { ReactNode } from "react";
+
 type CursorInvertTextProps = {
-  children: string;
+  children: ReactNode;
 };
 
 export function CursorInvertText({ children }: CursorInvertTextProps) {

@@ -276,6 +276,7 @@ export function Projects() {
             alt=""
             fill
             loading="eager"
+            unoptimized
             sizes="(max-width: 1279px) 29vw, 390px"
             className="object-cover"
           />

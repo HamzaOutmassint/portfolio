@@ -94,6 +94,7 @@ export function CustomCursor() {
       let currentTone: CursorTone = "dark";
       let currentInvertText: HTMLElement | null = null;
       let currentInvertRect: DOMRect | null = null;
+      let currentInvertIsReversed = false;
 
       const refreshInvertRect = () => {
         currentInvertRect = currentInvertText?.getBoundingClientRect() ?? null;
@@ -110,6 +111,8 @@ export function CustomCursor() {
         currentInvertText?.style.setProperty("--cursor-invert-radius", "0px");
         currentInvertText = nextInvertText;
         currentInvertRect = null;
+        currentInvertIsReversed =
+          target?.dataset.cursorInvertReverse === "true";
 
         if (currentInvertText) {
           refreshInvertRect();
@@ -125,14 +128,24 @@ export function CustomCursor() {
         const cursorWidth = Number.parseFloat(
           String(gsap.getProperty(cursor, "width")),
         );
+        const cursorXWithinText = cursorX - currentInvertRect.left;
+        const cursorYWithinText = cursorY - currentInvertRect.top;
 
         currentInvertText.style.setProperty(
           "--cursor-invert-x",
-          `${cursorX - currentInvertRect.left}px`,
+          `${
+            currentInvertIsReversed
+              ? currentInvertRect.width - cursorXWithinText
+              : cursorXWithinText
+          }px`,
         );
         currentInvertText.style.setProperty(
           "--cursor-invert-y",
-          `${cursorY - currentInvertRect.top}px`,
+          `${
+            currentInvertIsReversed
+              ? currentInvertRect.height - cursorYWithinText
+              : cursorYWithinText
+          }px`,
         );
         currentInvertText.style.setProperty(
           "--cursor-invert-radius",
