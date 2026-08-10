@@ -106,8 +106,8 @@ import {
 
 export function GalerieDesTanneursCaseStudy() {
   return (
-    <div className="page-shell case-study-content py-[var(--section-space)]">
-      <div className="mt-[var(--case-study-space)]">
+    <div className="page-shell case-study-content pb-[var(--section-space)]">
+      <div>
         <Overview detail="A connected retail platform bringing products, inventory, stock movements, sales and operational workflows into one system.">
           A full retail management platform built to connect back-office operations with the day-to-day reality of the point of sale.
         </Overview>
