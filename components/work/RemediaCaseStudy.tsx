@@ -2,19 +2,32 @@ import { CaseStudyImage, NumberedBlock, Overview } from "@/components/work/CaseS
 
 export function RemediaCaseStudy() {
   return (
-    <div className="page-shell case-study-content py-[var(--section-space)]">
-      <CaseStudyImage
-        src="/projects/remedia/change-done.png"
-        alt="Remedia assignment review interface showing student coursework, critical issues, rubric scores and feedback"
-        width={1493}
-        height={1083}
-        priority
-      />
-
-      <div className="mt-[var(--case-study-space)]">
+    <div className="page-shell case-study-content pb-[var(--section-space)]">
+      <div>
         <Overview detail="The interface keeps assignments, scoring criteria and written feedback in the same working context.">
           A considered assessment workflow for reading, reviewing and responding to student work.
         </Overview>
+      </div>
+
+      <div className="mt-[var(--case-study-space)] grid gap-10 lg:grid-cols-12 lg:items-start">
+        <div className="lg:col-span-8">
+          <CaseStudyImage
+            src="/projects/remedia/change-done.png"
+            alt="Remedia assignment review interface showing student coursework, critical issues, rubric scores and feedback"
+            width={1536}
+            height={1024}
+            sizes="(max-width: 1023px) calc(100vw - 2.5rem), (max-width: 1600px) 63vw, 1010px"
+          />
+        </div>
+        <article className="border-t border-line pt-5 lg:col-span-3 lg:col-start-10">
+          <p className="editorial-label text-accent">Review workflow</p>
+          <h2 className="mt-5 text-[clamp(1.5rem,2.5vw,2.35rem)] leading-none font-medium tracking-[-0.045em] uppercase">
+            Feedback in context
+          </h2>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-muted sm:text-lg">
+            The student’s work, rubric scores and written guidance remain visible together, so every review can lead to a clear next step.
+          </p>
+        </article>
       </div>
 
       <div className="mt-[var(--case-study-space)] grid gap-10 lg:grid-cols-12 lg:items-start">
@@ -44,7 +57,7 @@ export function RemediaCaseStudy() {
             sizes="(max-width: 1023px) calc(100vw - 2.5rem), (max-width: 1600px) 63vw, 1010px"
           />
         </div>
-        <div className="lg:col-span-3 lg:col-start-10 lg:pt-16">
+        <div className="lg:col-span-3 lg:col-start-10">
           <NumberedBlock number="02" title="Structured assessment">
             Rubrics turn expectations into a practical scoring framework, with room for specific corrections and feedback.
           </NumberedBlock>

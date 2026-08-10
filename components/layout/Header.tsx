@@ -1,4 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
+import { MenuOverlay } from "@/components/layout/MenuOverlay";
+import { CursorInvertText } from "@/components/ui/CursorInvertText";
+import { bricolageGrotesque } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site-config";
 
 type HeaderProps = {
@@ -6,36 +12,37 @@ type HeaderProps = {
 };
 
 export function Header({ detailPage = false }: HeaderProps) {
-  const prefix = detailPage ? "/" : "";
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="page-shell absolute inset-x-0 top-0 z-30 flex items-start justify-between pt-5 sm:pt-7">
-      <Link
-        href="/"
-        className="editorial-label transition-opacity hover:opacity-55"
-        aria-label={`${siteConfig.name}, home`}
+    <>
+      <header
+        className={`${bricolageGrotesque.className} hero-topbar absolute inset-x-0 z-50 flex items-center justify-between`}
       >
-        {siteConfig.shortName}
-      </Link>
-      <nav aria-label="Primary navigation">
-        <ul className="flex gap-4 text-[0.68rem] font-semibold tracking-[0.1em] uppercase sm:gap-7 sm:text-xs">
-          <li>
-            <Link className="link-line" href={`${prefix}#work`}>
-              Work
-            </Link>
-          </li>
-          <li>
-            <Link className="link-line" href={`${prefix}#about`}>
-              About
-            </Link>
-          </li>
-          <li>
-            <Link className="link-line" href={`${prefix}#contact`}>
-              Contact
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
+        <Link
+          href="/"
+          className="hero-brand editorial-label capitalize! transition-opacity max-sm:text-[16px]! lg:text-[18px]!"
+          aria-label={`${siteConfig.name}, home`}
+          data-cursor="fill"
+        >
+          <CursorInvertText>{siteConfig.shortName}</CursorInvertText>
+        </Link>
+        <button
+          type="button"
+          className="hero-menu-trigger editorial-label cursor-pointer capitalize! font-medium! max-sm:text-[16px]! lg:text-[18px]!"
+          aria-expanded={menuOpen}
+          aria-controls="hero-menu"
+          data-cursor="fill"
+          onClick={() => setMenuOpen(true)}
+        >
+          <CursorInvertText>Menu</CursorInvertText>
+        </button>
+      </header>
+      <MenuOverlay
+        open={menuOpen}
+        onOpenChange={setMenuOpen}
+        navigationPrefix={detailPage ? "/" : ""}
+      />
+    </>
   );
 }

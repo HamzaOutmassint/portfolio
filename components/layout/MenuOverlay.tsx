@@ -14,6 +14,7 @@ gsap.registerPlugin(useGSAP);
 type MenuOverlayProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  navigationPrefix?: string;
 };
 
 const navigationItems = [
@@ -47,7 +48,11 @@ const closeDialog = (dialog: HTMLDialogElement) => {
   dialog.removeAttribute("open");
 };
 
-export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
+export function MenuOverlay({
+  open,
+  onOpenChange,
+  navigationPrefix = "",
+}: MenuOverlayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const cursorLayerRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
@@ -202,6 +207,11 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
 
   const navigateTo = (href: string) => {
     closeMenu(() => {
+      if (href.startsWith("/")) {
+        window.location.assign(href);
+        return;
+      }
+
       const target = document.querySelector<HTMLElement>(href);
       if (!target) return;
 
@@ -257,22 +267,26 @@ export function MenuOverlay({ open, onOpenChange }: MenuOverlayProps) {
         <ul
           className={`${bricolageGrotesque.className} menu-overlay-links flex flex-col items-center gap-[clamp(4.25rem,3.2svh,2.25rem)] text-center`}
         >
-          {navigationItems.map((item, index) => (
-            <li key={item.href}>
-              <a
-                ref={index === 0 ? firstLinkRef : undefined}
-                href={item.href}
-                className="menu-overlay-link link-line block text-[clamp(2.8rem,7.5vw,7rem)] leading-[0.9] font-medium tracking-[-0.055em]"
-                data-cursor="fill"
-                onClick={(event) => {
-                  event.preventDefault();
-                  navigateTo(item.href);
-                }}
-              >
-                <CursorInvertText>{item.label}</CursorInvertText>
-              </a>
-            </li>
-          ))}
+          {navigationItems.map((item, index) => {
+            const href = `${navigationPrefix}${item.href}`;
+
+            return (
+              <li key={item.href}>
+                <a
+                  ref={index === 0 ? firstLinkRef : undefined}
+                  href={href}
+                  className="menu-overlay-link link-line block text-[clamp(2.8rem,7.5vw,7rem)] leading-[0.9] font-medium tracking-[-0.055em]"
+                  data-cursor="fill"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    navigateTo(href);
+                  }}
+                >
+                  <CursorInvertText>{item.label}</CursorInvertText>
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 

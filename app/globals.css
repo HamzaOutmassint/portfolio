@@ -192,6 +192,11 @@ button:focus-visible {
   padding-inline: var(--hero-gutter);
 }
 
+.hero-topbar {
+  --hero-gutter: max(var(--page-gutter), env(safe-area-inset-left));
+  --hero-edge-y: clamp(1.25rem, 3svh, 2rem);
+}
+
 .hero-bottom {
   bottom: calc(var(--hero-edge-y) + env(safe-area-inset-bottom));
   padding-inline: var(--hero-gutter);
