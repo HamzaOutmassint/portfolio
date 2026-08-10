@@ -133,7 +133,14 @@ export function GalerieDesTanneursCaseStudy() {
       </section>
 
       <section className="mt-[var(--case-study-space)] grid gap-10 lg:grid-cols-12 lg:items-start">
-        <div className="lg:col-span-8">
+        <div className="order-1 lg:order-2 lg:col-span-3 lg:col-start-10">
+          <NumberedBlock number="02" title="Inventory operations">
+            Stock moves between the warehouse and stores through traceable
+            transfer workflows, keeping every location connected.
+          </NumberedBlock>
+        </div>
+
+        <div className="order-2 lg:order-1 lg:col-span-8">
           <CaseStudyImage
             src="/projects/galerie-des-tanneurs/stock-transfers.png"
             alt="Galerie des Tanneurs stock transfer interface showing preparation, transit and reception states"
@@ -141,13 +148,6 @@ export function GalerieDesTanneursCaseStudy() {
             height={882}
             sizes="(max-width: 1023px) calc(100vw - 2.5rem), (max-width: 1600px) 63vw, 1010px"
           />
-        </div>
-
-        <div className="lg:col-span-3 lg:col-start-10">
-          <NumberedBlock number="02" title="Inventory operations">
-            Stock moves between the warehouse and stores through traceable
-            transfer workflows, keeping every location connected.
-          </NumberedBlock>
         </div>
       </section>
 
