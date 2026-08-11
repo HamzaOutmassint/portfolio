@@ -8,6 +8,7 @@ import { RemediaCaseStudy } from "@/components/work/RemediaCaseStudy";
 import { VoyspireCaseStudy } from "@/components/work/VoyspireCaseStudy";
 import { CurrentYear } from "@/components/ui/CurrentYear";
 import { getNextProject, getProject, projects } from "@/data/projects";
+import { siteUrl } from "@/lib/site-config";
 
 type WorkPageProps = {
   params: Promise<{ slug: string }>;
@@ -26,6 +27,22 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
   return {
     title: project.title,
     description: project.description,
+    alternates: {
+      canonical: `/work/${project.slug}`,
+    },
+    openGraph: {
+      title: `${project.title} — Hamza Outmassint`,
+      description: project.description,
+      url: `${siteUrl}/work/${project.slug}`,
+      type: "article",
+      images: [project.image],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} — Hamza Outmassint`,
+      description: project.description,
+      images: [project.image],
+    },
   };
 }
 
